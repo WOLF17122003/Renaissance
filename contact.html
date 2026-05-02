@@ -173,7 +173,7 @@
 <form class="space-y-12" id="contact-form">
 <div class="relative group">
 <label class="text-label-caps font-label-caps text-on-surface-variant block mb-2">FULL NAME</label>
-<input class="w-full bg-transparent border-b border-outline-variant py-4 text-headline-md font-headline-md focus:outline-none focus:border-primary transition-colors placeholder:text-surface-variant" id="full-name" name="full_name" placeholder="Your name" required="" type="text"/>
+<input class="w-full bg-transparent border-b border-outline-variant py-4 text-headline-md font-headline-md focus:outline-none focus:border-primary transition-colors placeholder:text-surface-variant" id="full-name" name="name" placeholder="Your name" required="" type="text"/>
 </div>
 <div class="relative group">
 <label class="text-label-caps font-label-caps text-on-surface-variant block mb-2">EMAIL ADDRESS</label>
@@ -320,9 +320,11 @@
             
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
+            data.message = "Subject: " + data.subject + "\n\n" + data.message;
+            delete data.subject;
             data.created_at = new Date().toISOString();
             
-            const { error } = await submitToSupabase('contact_messages', data);
+            const { error } = await submitToSupabase('messages', data);
             
             if (error) {
                 feedback.textContent = "Error: " + error.message;

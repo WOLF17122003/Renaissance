@@ -87,7 +87,7 @@
                     <div class="space-y-8">
                         <div class="relative group">
                             <label class="font-label-caps text-secondary mb-2 block uppercase text-xs">Full Name</label>
-                            <input class="w-full bg-transparent border-0 border-b border-zinc-300 py-4 focus:ring-0 focus:border-zinc-900 transition-colors text-body-lg font-body-lg" id="guest_name" name="guest_name" placeholder="E.g. Jane Doe" type="text" required/>
+                            <input class="w-full bg-transparent border-0 border-b border-zinc-300 py-4 focus:ring-0 focus:border-zinc-900 transition-colors text-body-lg font-body-lg" id="guest_name" name="guest_name" placeholder="E.g. Jane Doe" type="text" minlength="3" required/>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div class="relative group">
@@ -95,25 +95,14 @@
                                 <input class="w-full bg-transparent border-0 border-b border-zinc-300 py-4 focus:ring-0 focus:border-zinc-900 transition-colors text-body-lg font-body-lg" id="guest_email" name="guest_email" placeholder="jane@example.com" type="email" required/>
                             </div>
                             <div class="relative group">
-                                <label class="font-label-caps text-secondary mb-2 block uppercase text-xs">Number of Guests</label>
-                                <select class="w-full bg-transparent border-0 border-b border-zinc-300 py-4 focus:ring-0 focus:border-zinc-900 transition-colors text-body-lg font-body-lg appearance-none" id="guests" name="guests" required>
-                                    <option value="1">1 Guest</option>
-                                    <option value="2">2 Guests</option>
-                                    <option value="3">3 Guests</option>
-                                    <option value="4">4 Guests</option>
-                                </select>
+                                <label class="font-label-caps text-secondary mb-2 block uppercase text-xs">Phone Number</label>
+                                <input class="w-full bg-transparent border-0 border-b border-zinc-300 py-4 focus:ring-0 focus:border-zinc-900 transition-colors text-body-lg font-body-lg" id="guest_phone" name="guest_phone" placeholder="+1 234 567 8900" type="tel" required/>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div>
-                    <h3 class="font-h2 text-2xl mb-6">Special Requests</h3>
-                    <div class="relative group">
-                        <label class="font-label-caps text-secondary mb-2 block uppercase text-xs">Optional</label>
-                        <textarea class="w-full bg-transparent border-0 border-b border-zinc-300 py-4 focus:ring-0 focus:border-zinc-900 transition-colors text-body-lg font-body-lg" id="special_requests" name="special_requests" placeholder="Any special requests or dietary requirements..." rows="3"></textarea>
-                    </div>
-                </div>
+
 
                 <div id="form-feedback" class="hidden font-label-caps py-4 text-center border"></div>
 
