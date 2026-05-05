@@ -16,6 +16,12 @@
         body { font-family: 'Epilogue', sans-serif; background-color: #f9f9f9; }
         .noto-serif { font-family: 'Noto Serif', serif; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        /* Mobile nav overlay */
+        #mobile-menu {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        #mobile-menu.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        #mobile-menu:not(.open) { transform: translateY(-8px); opacity: 0; pointer-events: none; }
     </style>
     
     <script id="tailwind-config">
@@ -46,26 +52,41 @@
 </head>
 <body class="bg-surface text-on-surface">
 
-<nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm border-b border-zinc-200/20 flex justify-between items-center w-full px-16 py-6 mx-auto">
-    <div class="text-2xl font-bold tracking-tighter text-zinc-900 dark:text-zinc-50 noto-serif">RENAISSANCE</div>
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm border-b border-zinc-200/20 flex justify-between items-center w-full px-6 md:px-16 py-4 md:py-6 mx-auto">
+    <div class="text-xl md:text-2xl font-bold tracking-tighter text-zinc-900 dark:text-zinc-50 noto-serif">RENAISSANCE</div>
     <div class="hidden md:flex items-center space-x-12">
         <a class="text-zinc-500 hover:text-zinc-900 transition-colors noto-serif tracking-tight" href="index.html">The Hotel</a>
         <a class="text-[#D2AA00] font-medium border-b border-[#D2AA00] pb-1 noto-serif tracking-tight" href="booking.html">Rooms</a>
         <a class="text-zinc-500 hover:text-zinc-900 transition-colors noto-serif tracking-tight" href="about.html">About</a>
         <a class="text-zinc-500 hover:text-zinc-900 transition-colors noto-serif tracking-tight" href="contact.html">Contact</a>
     </div>
-    <a class="px-8 py-3 bg-zinc-900 text-white font-label-caps uppercase hover:bg-primary transition-all duration-300 scale-100 active:scale-95 inline-block text-center" href="#rooms-container">Book Now</a>
+    <div class="flex items-center gap-3">
+    <a class="hidden md:inline-block px-8 py-3 bg-zinc-900 text-white font-label-caps uppercase hover:bg-primary transition-all duration-300 scale-100 active:scale-95 text-center" href="#rooms-container">Book Now</a>
+    <button class="md:hidden flex flex-col gap-1.5 p-2" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+        <span class="block w-6 h-0.5 bg-zinc-900"></span>
+        <span class="block w-6 h-0.5 bg-zinc-900"></span>
+        <span class="block w-6 h-0.5 bg-zinc-900"></span>
+    </button>
+    </div>
 </nav>
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="fixed top-[64px] left-0 right-0 z-40 bg-white/95 backdrop-blur-sm border-b border-zinc-200 shadow-lg px-6 py-8 flex flex-col gap-6 noto-serif md:hidden">
+<a class="text-zinc-600 text-lg" href="index.html" onclick="closeMobileMenu()">The Hotel</a>
+<a class="text-[#D2AA00] font-medium text-lg" href="booking.html" onclick="closeMobileMenu()">Rooms</a>
+<a class="text-zinc-600 text-lg" href="about.html" onclick="closeMobileMenu()">About</a>
+<a class="text-zinc-600 text-lg" href="contact.html" onclick="closeMobileMenu()">Contact</a>
+<a class="bg-zinc-900 text-white px-6 py-3 font-label-caps uppercase text-center mt-2 block hover:bg-primary transition-all" href="#rooms-container">Book Now</a>
+</div>
 
-<main class="pt-40 pb-32 min-h-screen max-w-[1440px] mx-auto px-16">
-    <div class="mb-16">
+<main class="pt-32 md:pt-40 pb-16 md:pb-32 min-h-screen max-w-[1440px] mx-auto px-6 md:px-16">
+    <div class="mb-10 md:mb-16">
         <span class="font-label-caps text-primary mb-4 block uppercase tracking-widest">The Collection</span>
-        <h1 class="font-display-xl text-on-surface mb-8">Curated Spaces.</h1>
+        <h1 class="text-4xl md:text-[80px] font-display-xl text-on-surface mb-4 md:mb-8">Curated Spaces.</h1>
         <p class="font-body-lg text-secondary max-w-2xl">Discover our meticulously designed rooms and suites. Filter by your preferences to find the perfect backdrop for your stay.</p>
     </div>
 
     <!-- Filters Section -->
-    <div class="bg-white border border-outline-variant p-8 mb-16 flex flex-wrap gap-8 items-end shadow-sm">
+    <div class="bg-white border border-outline-variant p-6 md:p-8 mb-10 md:mb-16 flex flex-wrap gap-6 md:gap-8 items-end shadow-sm">
         <div class="flex-grow min-w-[200px]">
             <label class="font-label-caps text-xs text-secondary mb-2 block uppercase">Room Category</label>
             <select id="filter-type" class="w-full bg-transparent border-b border-zinc-300 py-3 text-body-md focus:outline-none focus:border-zinc-900 appearance-none">
@@ -99,7 +120,7 @@
     </div>
 </main>
 
-<footer class="bg-zinc-900 py-24 px-16">
+<footer class="bg-zinc-900 py-16 md:py-24 px-6 md:px-16">
     <div class="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 w-full">
         <div>
             <span class="text-3xl font-black text-white mb-8 block noto-serif">RENAISSANCE</span>
@@ -128,6 +149,13 @@
         initSupabase();
         applyFilters(); 
     });
+
+    function toggleMobileMenu() {
+        document.getElementById('mobile-menu').classList.toggle('open');
+    }
+    function closeMobileMenu() {
+        document.getElementById('mobile-menu').classList.remove('open');
+    }
 
     async function applyFilters() {
         if (!window.supabaseClient) {

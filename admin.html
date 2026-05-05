@@ -20,6 +20,17 @@
         * { -ms-overflow-style: none; scrollbar-width: none; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+
+        /* Mobile Drawer */
+        #mobile-drawer {
+            transition: transform 0.3s ease;
+        }
+        #mobile-drawer.open {
+            transform: translateX(0);
+        }
+        #drawer-overlay {
+            transition: opacity 0.3s ease;
+        }
     </style>
     
     <script id="tailwind-config">
@@ -44,7 +55,43 @@
 </head>
 <body>
 
-<!-- Navigation Drawer -->
+<!-- Mobile Drawer Overlay -->
+<div id="drawer-overlay" class="fixed inset-0 bg-black/50 z-30 md:hidden hidden" onclick="closeMobileDrawer()"></div>
+
+<!-- Mobile Drawer (slides in from left) -->
+<div id="mobile-drawer" class="fixed left-0 top-0 h-screen w-72 bg-white border-r border-zinc-900 z-50 flex flex-col pt-10 md:hidden -translate-x-full">
+    <div class="font-h1 text-2xl border-b border-zinc-900 pb-8 mb-8 px-10 flex justify-between items-center">
+        RENAISSANCE
+        <button onclick="closeMobileDrawer()" class="text-zinc-500 hover:text-zinc-900">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+    </div>
+    <nav class="flex flex-col space-y-2">
+        <button onclick="switchTab('overview'); closeMobileDrawer()" class="nav-mobile-btn px-6 py-4 flex items-center gap-4 font-label-caps uppercase bg-zinc-900 text-white">
+            <span class="material-symbols-outlined">dashboard</span><span>Overview</span>
+        </button>
+        <button onclick="switchTab('rooms'); closeMobileDrawer()" class="nav-mobile-btn px-6 py-4 flex items-center gap-4 font-label-caps uppercase text-zinc-500 hover:text-zinc-900">
+            <span class="material-symbols-outlined">bed</span><span>Rooms</span>
+        </button>
+        <button onclick="switchTab('bookings'); closeMobileDrawer()" class="nav-mobile-btn px-6 py-4 flex items-center gap-4 font-label-caps uppercase text-zinc-500 hover:text-zinc-900">
+            <span class="material-symbols-outlined">calendar_month</span><span>Bookings</span>
+        </button>
+        <button onclick="switchTab('messages'); closeMobileDrawer()" class="nav-mobile-btn px-6 py-4 flex items-center gap-4 font-label-caps uppercase text-zinc-500 hover:text-zinc-900">
+            <span class="material-symbols-outlined">mail</span><span>Messages</span>
+        </button>
+        <button onclick="switchTab('settings'); closeMobileDrawer()" class="nav-mobile-btn px-6 py-4 flex items-center gap-4 font-label-caps uppercase text-zinc-500 hover:text-zinc-900">
+            <span class="material-symbols-outlined">settings</span><span>Settings</span>
+        </button>
+        <a class="px-6 py-4 flex items-center gap-4 font-label-caps uppercase text-zinc-500 hover:text-zinc-900 mt-4" href="index.html">
+            <span class="material-symbols-outlined">home</span><span>Site Home</span>
+        </a>
+        <button onclick="logout()" class="px-6 py-4 flex items-center gap-4 font-label-caps uppercase text-red-500 hover:text-red-700">
+            <span class="material-symbols-outlined">logout</span><span>Logout</span>
+        </button>
+    </nav>
+</div>
+
+<!-- Desktop Sidebar -->
 <aside class="fixed left-0 top-0 hidden md:flex flex-col pt-10 h-screen w-80 border-r border-zinc-900 bg-white z-40">
     <div class="font-h1 text-2xl border-b border-zinc-900 pb-8 mb-8 px-10">RENAISSANCE</div>
     <nav class="flex flex-col space-y-2">
@@ -73,21 +120,21 @@
 </aside>
 
 <!-- Top App Bar -->
-<header class="flex justify-between items-center w-full px-10 h-20 fixed top-0 bg-white z-30 border-b border-zinc-900 md:pl-[360px]">
+<header class="flex justify-between items-center w-full px-6 md:px-10 h-16 md:h-20 fixed top-0 bg-white z-30 border-b border-zinc-900 md:pl-[360px]">
     <div class="flex items-center gap-4">
-        <button class="md:hidden p-2" onclick="alert('Mobile nav not implemented for admin panel.')">
+        <button class="md:hidden p-2" onclick="openMobileDrawer()">
             <span class="material-symbols-outlined">menu</span>
         </button>
-        <h1 class="font-h2 text-2xl font-bold tracking-widest text-zinc-900">RENAISSANCE ADMIN</h1>
+        <h1 class="font-h2 text-lg md:text-2xl font-bold tracking-widest text-zinc-900">RENAISSANCE ADMIN</h1>
     </div>
 </header>
 
-<main class="pt-32 pb-24 px-6 md:px-10 md:ml-80 min-h-screen">
+<main class="pt-20 md:pt-32 pb-24 px-4 md:px-10 md:ml-80 min-h-screen">
 
     <!-- OVERVIEW TAB -->
     <section id="tab-overview" class="tab-content active">
         <h2 class="font-h2 text-3xl mb-8">Dashboard Overview</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 border border-zinc-900 divide-y md:divide-y-0 md:divide-x divide-zinc-900 mb-12 bg-white">
+        <div class="grid grid-cols-1 sm:grid-cols-3 border border-zinc-900 divide-y sm:divide-y-0 sm:divide-x divide-zinc-900 mb-12 bg-white">
             <div class="py-12 px-6">
                 <p class="font-label-caps text-zinc-500 mb-4 uppercase tracking-widest">Total Bookings</p>
                 <h2 class="font-h1 text-[64px] leading-none text-primary" id="total-bookings">0</h2>
@@ -113,7 +160,7 @@
         <div id="room-form-container" class="hidden bg-white border border-zinc-900 p-8 mb-12">
             <h3 class="font-h2 text-2xl mb-6">Create Room</h3>
             <form id="add-room-form" class="space-y-6">
-                <div class="grid grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
                         <label class="font-label-caps uppercase text-xs mb-2 block">Room Title</label>
                         <input type="text" id="room-title" required class="w-full border-b border-zinc-300 py-2 focus:outline-none focus:border-zinc-900">
@@ -237,6 +284,16 @@
 </main>
 
 <script>
+    // --- MOBILE DRAWER ---
+    function openMobileDrawer() {
+        document.getElementById('mobile-drawer').classList.add('open');
+        document.getElementById('drawer-overlay').classList.remove('hidden');
+    }
+    function closeMobileDrawer() {
+        document.getElementById('mobile-drawer').classList.remove('open');
+        document.getElementById('drawer-overlay').classList.add('hidden');
+    }
+
     // --- AUTHENTICATION GUARD ---
     document.addEventListener('DOMContentLoaded', async () => {
         initSupabase();

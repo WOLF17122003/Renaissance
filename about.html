@@ -113,14 +113,30 @@
         }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .gallery-frame { padding: 64px; }
+        .gallery-frame { padding: 24px; }
+        @media (min-width: 768px) { .gallery-frame { padding: 64px; } }
         .overlap-offset-content { margin-top: -48px; }
+
+        /* Mobile nav overlay */
+        #mobile-menu {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        #mobile-menu.open {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #mobile-menu:not(.open) {
+            transform: translateY(-8px);
+            opacity: 0;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="bg-surface text-on-surface font-body-md">
 <!-- PRIMARY NAVIGATION BAR -->
-<nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm border-b border-zinc-200/20 flex justify-between items-center w-full px-16 py-6 mx-auto">
-<div class="text-2xl font-bold tracking-tighter text-zinc-900 dark:text-zinc-50 font-['Noto_Serif']">RENAISSANCE</div>
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm border-b border-zinc-200/20 flex justify-between items-center w-full px-6 md:px-16 py-4 md:py-6 mx-auto">
+<div class="text-xl md:text-2xl font-bold tracking-tighter text-zinc-900 dark:text-zinc-50 font-['Noto_Serif']">RENAISSANCE</div>
 <div class="hidden md:flex items-center space-x-12">
 <a class="text-zinc-500 hover:text-zinc-900 transition-colors font-['Noto_Serif']" href="index.html">The Hotel</a>
 <a class="text-zinc-500 hover:text-zinc-900 transition-colors font-['Noto_Serif']" href="booking.html">Rooms</a>
@@ -128,20 +144,34 @@
 <a class="text-[#D2AA00] font-medium border-b border-[#D2AA00] pb-1 font-['Noto_Serif']" href="about.html">About</a>
 <a class="text-zinc-500 hover:text-zinc-900 transition-colors font-['Noto_Serif']" href="contact.html">Contact</a>
 </div>
-<a class="px-8 py-3 bg-zinc-900 text-white font-label-caps text-xs tracking-widest uppercase hover:bg-[#D2AA00] transition-all scale-100 active:scale-95 duration-200 inline-block text-center" href="booking.html">
-            Book Now
-        </a>
+<div class="flex items-center gap-3">
+<a class="hidden md:inline-block px-8 py-3 bg-zinc-900 text-white font-label-caps text-xs tracking-widest uppercase hover:bg-[#D2AA00] transition-all scale-100 active:scale-95 duration-200 text-center" href="booking.html">Book Now</a>
+<button id="hamburger-btn" class="md:hidden flex flex-col gap-1.5 p-2" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+    <span class="block w-6 h-0.5 bg-zinc-900 transition-all duration-300"></span>
+    <span class="block w-6 h-0.5 bg-zinc-900 transition-all duration-300"></span>
+    <span class="block w-6 h-0.5 bg-zinc-900 transition-all duration-300"></span>
+</button>
+</div>
 </nav>
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="fixed top-[64px] left-0 right-0 z-40 bg-white/95 backdrop-blur-sm border-b border-zinc-200 shadow-lg px-6 py-8 flex flex-col gap-6 font-['Noto_Serif'] tracking-tight md:hidden">
+<a class="text-zinc-600 hover:text-zinc-900 transition-colors text-lg" href="index.html" onclick="closeMobileMenu()">The Hotel</a>
+<a class="text-zinc-600 hover:text-zinc-900 transition-colors text-lg" href="booking.html" onclick="closeMobileMenu()">Rooms</a>
+<a class="text-zinc-600 hover:text-zinc-900 transition-colors text-lg" href="index.html#experiences" onclick="closeMobileMenu()">Experiences</a>
+<a class="text-[#D2AA00] font-medium text-lg" href="about.html" onclick="closeMobileMenu()">About</a>
+<a class="text-zinc-600 hover:text-zinc-900 transition-colors text-lg" href="contact.html" onclick="closeMobileMenu()">Contact</a>
+<a class="bg-zinc-900 text-white px-6 py-3 font-label-caps uppercase text-center mt-2 w-full block hover:bg-[#D2AA00] transition-all" href="booking.html">Book Now</a>
+</div>
 <main class="pt-24">
 <!-- Artistic Banner -->
-<section class="relative h-[819px] w-full overflow-hidden flex items-center px-16">
+<section class="relative h-[50vh] md:h-[819px] min-h-[400px] w-full overflow-hidden flex items-center px-6 md:px-16">
 <div class="absolute inset-0 z-0 scale-105">
 <img class="w-full h-full object-cover brightness-75" data-alt="A grand, high-ceilinged hotel lobby with architectural marble columns and warm ambient lighting. The style is classic European elegance meets modern minimalism, featuring gold accents and deep charcoal furniture. Soft sunlight filters through massive arched windows, creating a serene and sophisticated atmosphere consistent with the editorial gallery aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlBg9VfiVgYZP6s5p-bbKHFs8MUfSzaZ7Wa-eOPlSpJm4wFcyxH-usjqSO6aYTzD7PAlr0srwLjEj--wCzmZUXriAALeSz5Z6Us2SjYVgbmKyBs8THXflDvMkkv60XO_9WjsF5gV-x01m0g7ZmehYbdmSD7o2Hqtkqog0hSP0OsKQO1C62DMXFkUL76_m4Fe2ZAY89Bm02GWUXlUKKdQQe1TqkrlhyZSK4bUP8ktefcWXSbaeEQEbL3PVlLwHNU6ztxNHYg02qV7-V"/>
 </div>
 <div class="relative z-10 max-w-4xl">
-<p class="font-label-caps text-white mb-6 uppercase tracking-[0.3em]">The Curator's Story</p>
-<h1 class="font-display-xl text-white mb-8">A Gallery of Timeless Moments.</h1>
-<div class="w-24 h-1 bg-[#D2AA00]"></div>
+<p class="font-label-caps text-white mb-4 md:mb-6 uppercase tracking-[0.3em]">The Curator's Story</p>
+<h1 class="text-[40px] md:text-[80px] font-display-xl text-white mb-6 md:mb-8">A Gallery of Timeless Moments.</h1>
+<div class="w-16 md:w-24 h-1 bg-[#D2AA00]"></div>
 </div>
 </section>
 <!-- Storytelling Section: Block 1 -->
@@ -178,7 +208,7 @@
 </div>
 </section>
 <!-- Values Section -->
-<section class="gallery-frame py-40 bg-zinc-900 text-white">
+<section class="gallery-frame py-16 md:py-40 bg-zinc-900 text-white">
 <div class="max-w-[1440px] mx-auto">
 <div class="mb-32">
 <h3 class="font-label-caps text-[#D2AA00] mb-4">OUR PHILOSOPHY</h3>
@@ -201,8 +231,8 @@
 </div>
 </section>
 <!-- Visual Timeline Section -->
-<section class="py-32 overflow-hidden bg-surface">
-<div class="px-16 mb-16 flex justify-between items-end">
+<section class="py-16 md:py-32 overflow-hidden bg-surface">
+<div class="px-6 md:px-16 mb-10 md:mb-16 flex justify-between items-end">
 <div>
 <span class="font-label-caps text-primary mb-4 block">CHRONICLES</span>
 <h2 class="font-headline-lg">A Century of Moments</h2>
@@ -216,9 +246,9 @@
 </button>
 </div>
 </div>
-<div id="chronicles-scroll" class="flex gap-12 px-16 overflow-x-auto hide-scrollbar pb-12 scroll-smooth">
+<div id="chronicles-scroll" class="flex gap-8 md:gap-12 px-6 md:px-16 overflow-x-auto hide-scrollbar pb-12 scroll-smooth">
 <!-- Timeline Item 1 -->
-<div class="flex-shrink-0 w-[450px]">
+<div class="flex-shrink-0 w-[85vw] md:w-[450px]">
 <div class="relative mb-8">
 <img class="w-full aspect-[16/9] object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="A vintage 1920s black and white photograph of a stately hotel facade with classic motorcars parked in front. The image captures the historical grandeur of the hotel's founding era, with architectural details rendered in sharp, high-contrast monochrome tones, reflecting the brand's heritage." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmYYrepEtk_jtGmXTZAvF_HDr9NGzBtmP02IXSLFPqFLcpbI2IudPfe422JTEDwW8fZ0CU1dwT_GTNO8J3nu2U7WfrzhBRtwFrVcVWeVUjuObwz6gTPD3tgQumQeOXXfhYml_x6tTSSunTPbVNWnbqkFLpcEUJjO2A7SKqMsNvZCewi_e2muYEUdpIyzskbwcOTeiSO8WHz2oosR9FJzVdmpvODWvaIlWjTbCNdu4Nl_Qlcb33cH975HBqWvnK69f3MscR4PYwA6Ek"/>
 <div class="absolute -top-4 -left-4 bg-[#D2AA00] text-on-primary-container px-6 py-2 font-display-xl text-3xl">1924</div>
@@ -227,7 +257,7 @@
 <p class="text-secondary font-body-md">The grand opening of Renaissance, originally serving as a private salon for the city's intellectual elite.</p>
 </div>
 <!-- Timeline Item 2 -->
-<div class="flex-shrink-0 w-[450px]">
+<div class="flex-shrink-0 w-[85vw] md:w-[450px]">
 <div class="relative mb-8">
 <img class="w-full aspect-[16/9] object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="A mid-century modern hotel lounge scene with iconic designer furniture and large windows overlooking a manicured garden. The photograph uses warm sepia and muted tones, showcasing the hotel's transition into mid-20th-century luxury. The lighting is soft and golden, highlighting the textures of velvet and wood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnv38TrtYbO8oMc9EUdjh53F7aZyH-KSGhcxDnk2GKVnKrmYpckmDyGfv_0PwoUit1ROhhuEgWGGsXM2l0h0EP8mzTFjAJRfme4rBSwyOWZ07Vc5oIo02OWdTmZ8j1qCNisiZi_CYZsKokXXuKUQYC0w1-UzIFO9o746EoXZ_XiR1JdFVUW0mBPNdub0PNuodZZ3JLog2bIha3fn30yiR2ejrRDUVaSt9zh9KDB3g7f_hh276ttd6lc10Fd0RQjh4HziBacvR5Wt6O"/>
 <div class="absolute -top-4 -left-4 bg-[#D2AA00] text-on-primary-container px-6 py-2 font-display-xl text-3xl">1958</div>
@@ -236,7 +266,7 @@
 <p class="text-secondary font-body-md">A comprehensive restoration that introduced the mid-century modern elements still celebrated today.</p>
 </div>
 <!-- Timeline Item 3 -->
-<div class="flex-shrink-0 w-[450px]">
+<div class="flex-shrink-0 w-[85vw] md:w-[450px]">
 <div class="relative mb-8">
 <img class="w-full aspect-[16/9] object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="A contemporary art installation within a sleek, modern hotel corridor featuring glowing neon and reflective surfaces. The image is bright and airy, representing the hotel's modern identity. The composition uses leading lines and clean geometric shapes to convey a sense of technological advancement and artistic forward-thinking." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBx5h6Obx-WbyBnYFiLvGq-GBpgXcxiQYvS3rym4PRrefNohn9xAJnrmgWOuGgi6aOb7xh8Cn-QLuE8BiC3TJXscje179DiLsO3li_aFJrwvyE4xxqqsbi9cyqzCM_bzxnbfqOppxTs2tIKsJTkdrMSapTGO4z6fKXHqoKGdYH59OzBdJu6wJnlkF9n-Z65wgKKYDnXN5pzqahFfQnL1EKkPwuTjZmaTrbGQwHiPKMoUrOqJsp52JeLZKPF9Qd_N81uNxk3rhby4Tuc"/>
 <div class="absolute -top-4 -left-4 bg-[#D2AA00] text-on-primary-container px-6 py-2 font-display-xl text-3xl">2024</div>
@@ -245,7 +275,7 @@
 <p class="text-secondary font-body-md">Our centennial celebration marks the launch of the Global Gallery initiative, connecting guests with local artists.</p>
 </div>
 <!-- Timeline Item 4 -->
-<div class="flex-shrink-0 w-[450px]">
+<div class="flex-shrink-0 w-[85vw] md:w-[450px]">
 <div class="relative mb-8">
 <img class="w-full aspect-[16/9] object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="A tranquil exterior evening shot of a luxury hotel garden with glowing paper lanterns and a reflective pool. The atmosphere is serene and magical, with a focus on harmony between nature and architecture. The lighting is low and intimate, creating a mood of sophisticated peace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU4VyMHSTnODVEjF0p0wfmwqdA3hUaMejg23AbEaYJ2cDzqP1irupxZRS4oUtrlBqFhDmbhzfypCDK7Nz8aPoOkINV-5czbWcaJC3n4Ay5HBKl7RCvdQslLX0XZWhWvt-KVY09dZM34wQhKqlXzQwQQ-7FnvqOGmFj-NuLojL8QeW1-9w8z-c31kRBXIe0IW407vp1AoCjSQpYgZY_FQZk0tu66Dvm3llZXbFERaBPkoda_mVTrlQ9L6WZRAvnKwAfFqkvccY9t_Dk"/>
 <div class="absolute -top-4 -left-4 bg-[#D2AA00] text-on-primary-container px-6 py-2 font-display-xl text-3xl">Future</div>
@@ -256,17 +286,17 @@
 </div>
 </section>
 <!-- CTA Section -->
-<section class="gallery-frame py-32 flex flex-col items-center text-center">
-<h2 class="font-display-xl mb-12 max-w-2xl">Become part of our continuing history.</h2>
-<div class="flex gap-6">
-<a href="booking.html" class="px-12 py-5 bg-zinc-900 text-white font-label-caps tracking-widest hover:bg-[#D2AA00] transition-colors inline-block">Book Your Stay</a>
-<a href="booking.html" class="px-12 py-5 border border-outline font-label-caps tracking-widest hover:bg-zinc-50 transition-colors inline-block">View Rooms</a>
+<section class="gallery-frame py-16 md:py-32 flex flex-col items-center text-center">
+<h2 class="text-3xl md:text-[80px] font-display-xl mb-8 md:mb-12 max-w-2xl leading-tight">Become part of our continuing history.</h2>
+<div class="flex flex-col sm:flex-row gap-4 md:gap-6 w-full max-w-sm sm:max-w-none sm:w-auto">
+<a href="booking.html" class="px-10 md:px-12 py-4 md:py-5 bg-zinc-900 text-white font-label-caps tracking-widest hover:bg-[#D2AA00] transition-colors inline-block text-center">Book Your Stay</a>
+<a href="booking.html" class="px-10 md:px-12 py-4 md:py-5 border border-outline font-label-caps tracking-widest hover:bg-zinc-50 transition-colors inline-block text-center">View Rooms</a>
 </div>
 </section>
 </main>
 
 <!-- SITE FOOTER -->
-<footer class="bg-zinc-900 dark:bg-black full-width py-24 px-16">
+<footer class="bg-zinc-900 dark:bg-black full-width py-16 md:py-24 px-6 md:px-16">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-[1440px] mx-auto">
 <div>
 <span class="text-3xl font-black text-white mb-8 block font-['Noto_Serif'] tracking-tighter">RENAISSANCE</span>
@@ -295,12 +325,20 @@
 </div>
 </div>
 </div>
-<div class="mt-24 pt-12 border-t border-zinc-800 w-full max-w-[1440px] mx-auto flex justify-between items-center">
-<span class="font-['Noto_Serif'] text-sm tracking-widest uppercase text-zinc-500 text-xs">© 2024 RENAISSANCE HOTEL. A CURATED GALLERY OF MOMENTS.</span>
+<div class="mt-12 md:mt-24 pt-8 md:pt-12 border-t border-zinc-800 w-full max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+<span class="font-['Noto_Serif'] text-xs tracking-widest uppercase text-zinc-500 text-center">© 2024 RENAISSANCE HOTEL. A CURATED GALLERY OF MOMENTS.</span>
 <div class="flex items-center gap-2 text-zinc-500 font-label-caps text-xs">
                 DESIGNED FOR THE CURIOUS
                 <span class="material-symbols-outlined text-xs">stat_0</span>
 </div>
 </div>
 </footer>
+<script>
+    function toggleMobileMenu() {
+        document.getElementById('mobile-menu').classList.toggle('open');
+    }
+    function closeMobileMenu() {
+        document.getElementById('mobile-menu').classList.remove('open');
+    }
+</script>
 </body></html>

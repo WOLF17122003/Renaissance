@@ -119,12 +119,27 @@
         }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Mobile nav overlay */
+        #mobile-menu {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        #mobile-menu.open {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #mobile-menu:not(.open) {
+            transform: translateY(-8px);
+            opacity: 0;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="bg-surface font-body-md text-on-surface">
 <!-- TopNavBar -->
-<nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm border-b border-zinc-200/20 dark:border-zinc-800/20 flex justify-between items-center w-full px-16 py-6 mx-auto">
-<div class="text-2xl font-bold tracking-tighter text-zinc-900 dark:text-zinc-50 font-['Noto_Serif']">RENAISSANCE</div>
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm border-b border-zinc-200/20 dark:border-zinc-800/20 flex justify-between items-center w-full px-6 md:px-16 py-4 md:py-6 mx-auto">
+<div class="text-xl md:text-2xl font-bold tracking-tighter text-zinc-900 dark:text-zinc-50 font-['Noto_Serif']">RENAISSANCE</div>
 <div class="hidden md:flex items-center gap-12 font-['Noto_Serif'] tracking-tight">
 <a class="text-[#D2AA00] font-medium border-b border-[#D2AA00] pb-1" href="index.html">The Hotel</a>
 <a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" href="booking.html">Rooms</a>
@@ -132,39 +147,53 @@
 <a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" href="about.html">About</a>
 <a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" href="contact.html">Contact</a>
 </div>
-<a class="bg-[#D2AA00] text-on-primary-container px-8 py-3 font-label-caps uppercase scale-100 active:scale-95 duration-200 transition-all inline-block" href="booking.html">
-            Book Now
-        </a>
+<div class="flex items-center gap-3">
+<a class="hidden md:inline-block bg-[#D2AA00] text-on-primary-container px-8 py-3 font-label-caps uppercase scale-100 active:scale-95 duration-200 transition-all" href="booking.html">Book Now</a>
+<button id="hamburger-btn" class="md:hidden flex flex-col gap-1.5 p-2" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+    <span class="block w-6 h-0.5 bg-zinc-900 transition-all duration-300" id="hb-line1"></span>
+    <span class="block w-6 h-0.5 bg-zinc-900 transition-all duration-300" id="hb-line2"></span>
+    <span class="block w-6 h-0.5 bg-zinc-900 transition-all duration-300" id="hb-line3"></span>
+</button>
+</div>
 </nav>
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="fixed top-[64px] left-0 right-0 z-40 bg-white/95 backdrop-blur-sm border-b border-zinc-200 shadow-lg px-6 py-8 flex flex-col gap-6 font-['Noto_Serif'] tracking-tight md:hidden">
+<a class="text-[#D2AA00] font-medium text-lg" href="index.html" onclick="closeMobileMenu()">The Hotel</a>
+<a class="text-zinc-600 hover:text-zinc-900 transition-colors text-lg" href="booking.html" onclick="closeMobileMenu()">Rooms</a>
+<a class="text-zinc-600 hover:text-zinc-900 transition-colors text-lg" href="index.html#experiences" onclick="closeMobileMenu()">Experiences</a>
+<a class="text-zinc-600 hover:text-zinc-900 transition-colors text-lg" href="about.html" onclick="closeMobileMenu()">About</a>
+<a class="text-zinc-600 hover:text-zinc-900 transition-colors text-lg" href="contact.html" onclick="closeMobileMenu()">Contact</a>
+<a class="bg-[#D2AA00] text-on-primary-container px-6 py-3 font-label-caps uppercase text-center mt-2 w-full block" href="booking.html">Book Now</a>
+</div>
 <main>
 <!-- Hero Section -->
-<section class="relative h-screen w-full overflow-hidden bg-zinc-900">
+<section class="relative h-screen min-h-[600px] w-full overflow-hidden bg-zinc-900">
 <div class="absolute inset-0 opacity-80">
-<img alt="Luxury Hotel Lobby" class="w-full h-full object-cover" data-alt="A breathtaking, cinematic shot of a luxury hotel grand lobby featuring towering marble columns and exquisite architectural details. The space is flooded with warm, golden hour sunlight streaming through floor-to-ceiling windows, highlighting a palette of deep charcoal and muted gold. A sense of serene, high-end artistic minimalism pervades the composition, which is captured with professional, high-fidelity photography techniques." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCz8GOX9FOYoQPEcimD9zTQJ1drR1u9oASHrAhHf0eA_7MAKG-G_AunGab0lzKOfBJK5nlMA3g3JIbg5Io1u1zem5wOxsITHWIqGorLdNRG0fsB-CdAX1O7I-BcLYMeF78L9a9h5grwLAJFU9lPMcdATkjMdLv3vWz_5BoV7rF-BFr_Vqr2NxczSZUYar3tYG9YyA5ikkuxs4cAs-S_bg_sf0jrOGdMNPApjQ1fzu_0iJTQrlO6LNqWmz-IS7L_PkJz24nONQ4PVqEN"/>
+<img alt="Luxury Hotel Lobby" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCz8GOX9FOYoQPEcimD9zTQJ1drR1u9oASHrAhHf0eA_7MAKG-G_AunGab0lzKOfBJK5nlMA3g3JIbg5Io1u1zem5wOxsITHWIqGorLdNRG0fsB-CdAX1O7I-BcLYMeF78L9a9h5grwLAJFU9lPMcdATkjMdLv3vWz_5BoV7rF-BFr_Vqr2NxczSZUYar3tYG9YyA5ikkuxs4cAs-S_bg_sf0jrOGdMNPApjQ1fzu_0iJTQrlO6LNqWmz-IS7L_PkJz24nONQ4PVqEN"/>
 </div>
-<div class="relative z-10 h-full flex items-center px-16 max-w-[1440px] mx-auto">
+<div class="relative z-10 h-full flex items-center px-6 md:px-16 max-w-[1440px] mx-auto">
 <div class="max-w-4xl">
-<div class="mb-6 flex flex-col md:flex-row items-start md:items-center gap-4">
+<div class="mb-4 md:mb-6 flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-4">
 <span class="font-label-caps text-primary-container border-b border-primary-container pb-1 uppercase">Est. 1924</span>
 <span class="text-primary-container font-label-caps uppercase whitespace-nowrap">Curated Excellence</span>
 </div>
-<h1 class="font-display-xl text-on-primary mb-8 leading-[0.9]">
-                        A Renaissance <br/> of the Soul.
-                    </h1>
+<h1 class="text-[48px] md:text-[80px] font-display-xl text-on-primary mb-6 md:mb-8 leading-[0.95]">
+    A Renaissance <br/> of the Soul.
+</h1>
 <div class="flex gap-8 items-center">
-<a href="booking.html" class="group relative px-12 py-5 border border-primary-container text-white font-label-caps overflow-hidden transition-all duration-500 hover:bg-primary-container hover:text-on-primary-container inline-block">
-                            Book Your Stay
-                        </a>
+<a href="booking.html" class="group relative px-8 md:px-12 py-4 md:py-5 border border-primary-container text-white font-label-caps overflow-hidden transition-all duration-500 hover:bg-primary-container hover:text-on-primary-container inline-block text-xs md:text-sm">
+    Book Your Stay
+</a>
 </div>
 </div>
 </div>
 </section>
 <!-- Room Showcase - Asymmetrical Grid -->
-<section class="py-32 px-16 bg-surface">
+<section class="py-16 md:py-32 px-6 md:px-16 bg-surface">
 <div class="max-w-[1440px] mx-auto">
 <div class="grid grid-cols-12 gap-gutter items-start">
 <!-- Column 1 -->
-<div class="col-span-12 md:col-span-5 flex flex-col gap-32">
+<div class="col-span-12 md:col-span-5 flex flex-col gap-16 md:gap-32">
 <div class="group">
 <div class="overflow-hidden aspect-[4/5] bg-surface-container mb-8">
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A minimalist luxury hotel suite with pristine white linens and dark oak furniture. The room features an art-directed composition with soft natural light creating long shadows on a textured charcoal wall. The atmosphere is quiet and sophisticated, embodying an editorial aesthetic of high-contrast minimalism and premium textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-MlewMhwx-pHiFhVP6QZ0TUVQ-27ENX1_cYBVCtYTKuCL8qwFJav859qXYlOtV5OvMa3ozez1LLCqIRzgQ0HfraYuVbRloOdU91UB00iR0ZQdeJ8HlhgDoaEn2SLaeg1D0gQPFL0IbPSCJ72L_RoUxfCx9nVoP3qQEy4bbtQN0azccQFvEvuU8qqpGmWvgzEHnBBJdK3qOubgXHEMva1KDwub-sqCReu366FtmWOlQ46jzzHruQ-ERHayVJO5ZML6tRal4u-JxRJk"/>
@@ -202,8 +231,8 @@
 </div>
 </section>
 <!-- Experience Section - Horizontal Scroll -->
-<section id="experiences" class="py-32 bg-zinc-900 text-white overflow-hidden">
-<div class="px-16 max-w-[1440px] mx-auto mb-16 flex justify-between items-end">
+<section id="experiences" class="py-16 md:py-32 bg-zinc-900 text-white overflow-hidden">
+<div class="px-6 md:px-16 max-w-[1440px] mx-auto mb-10 md:mb-16 flex justify-between items-end">
 <div>
 <span class="font-label-caps text-primary-container uppercase mb-4 block">Experiences</span>
 <h2 class="font-display-xl text-white">Curated Gallery.</h2>
@@ -217,9 +246,9 @@
 </button>
 </div>
 </div>
-<div class="flex gap-8 overflow-x-auto hide-scrollbar px-16 snap-x">
+<div class="flex gap-6 md:gap-8 overflow-x-auto hide-scrollbar px-6 md:px-16 snap-x">
 <!-- Spa -->
-<div class="flex-none w-[450px] snap-start group">
+<div class="flex-none w-[85vw] md:w-[450px] snap-start group">
 <div class="aspect-[4/5] bg-zinc-800 mb-6 overflow-hidden relative">
 <img class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500" data-alt="A serene spa environment with minimalist concrete walls and a dark reflecting pool. Soft steam rises into the air, illuminated by subtle recessed lighting. The mood is one of profound tranquility and modern zen, featuring a palette of cool greys and deep blacks." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7PtsA_c-l0nAfzC08wXfzT5TMSgpfRiDE_Dr2IQvwP_fPdg8S07JhmSZqke5hdMwCFKQ4XDa3XZVASYxQC1pJ98qUd6HULVkzIzUu-CZq-Mn4-33Dqn2z24yYUbMCcOG3K6_7jwxUAi63bqeaySdEbWPgmnWrr9LuumDynB0lT5MlIb1dQdy6fjA8STGhIQ1WzCwDU_xV2K54oRrV5B2GAvYPqp8a0wjdSFx1u9vznMzDBo6H-UVi4h-w6VDHE9MCzwSYhTH3jgYA"/>
 <div class="absolute bottom-8 left-8">
@@ -229,7 +258,7 @@
 <p class="font-body-md text-zinc-400">A sensory journey through water and silence, designed for absolute restoration.</p>
 </div>
 <!-- Dining -->
-<div class="flex-none w-[450px] snap-start group">
+<div class="flex-none w-[85vw] md:w-[450px] snap-start group">
 <div class="aspect-[4/5] bg-zinc-800 mb-6 overflow-hidden relative">
 <img class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500" data-alt="A fine dining setting with dark moody lighting, featuring a single exquisitely plated dish on a dark stone table. In the background, a sommelier is partially visible in a soft blur. The composition is highly editorial, emphasizing contrast, rich textures, and an atmosphere of exclusive artistic gastronomy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhd4YGZiXawT73XaQGY7aI0kvbuLlvNInZWiHWVLtNlpHNvpIJ_0LmgBoa9zz0IbBbBGMKt1LvunN-vOL2oHLOMUVDAu-mIcDJb2qsKgmVyL_uj7v8o7Y4iK6NsJpP7Q4esjyyvNQV0Mg2DxQxp_Qx5lGor1TmXsBVEf6mnAMuyjUCcz59xX5io0FQojoKgfLm7N_lzWZ2BXSFX0u9JlYRygQNDOSxv7LhCY-tBCuk5nNo3IC86LuTmyCTCaCYq1L9QrUXKkwQ2t-o"/>
 <div class="absolute bottom-8 left-8">
@@ -239,7 +268,7 @@
 <p class="font-body-md text-zinc-400">Gastronomy as performance art. A dialogue between seasonal purity and modern technique.</p>
 </div>
 <!-- Events -->
-<div class="flex-none w-[450px] snap-start group">
+<div class="flex-none w-[85vw] md:w-[450px] snap-start group">
 <div class="aspect-[4/5] bg-zinc-800 mb-6 overflow-hidden relative">
 <img class="w-full h-full object-crop opacity-60 group-hover:opacity-100 transition-opacity duration-500" data-alt="A grand ballroom set for an avant-garde event, featuring floating floral installations and sculptural lighting fixtures. The space is vast and modern, with an architectural rhythm defined by light and shadow. The mood is sophisticated and celebratory, focusing on artistic detail and grand proportions." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDViAGGReJAG1svXT6fAh_COzDeUABbtCPdjGXxHghQ4o-HjeEu2niFK5--T1HQNeRLxkYJBcSCaecZatuXolpO9LxYw7BkPz7OM9dOkYfXW2fI4gi3nMgy-CvRhmnwnYNyXfvUQ-J3QYHzLWGkqY_dSad2nCj6zw-OtafVYPbnza3XwJlRLmHUHDnUh6lQ7MA2VBxaD13wved2w7nl15kyxWIGT9AUU57O_3lY_MoZFqt9YLUV5UjB2h5GHIdak6AyFEeadEBIxxoP"/>
 <div class="absolute bottom-8 left-8">
@@ -251,8 +280,8 @@
 </div>
 </section>
 <!-- Testimonial Section -->
-<section class="py-48 px-16 bg-surface">
-<div class="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-32 items-center">
+<section class="py-16 md:py-48 px-6 md:px-16 bg-surface">
+<div class="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-32 items-center">
 <div class="relative">
 <div class="absolute -top-16 -left-8 text-[200px] font-display-xl text-primary/5 select-none leading-none">“</div>
 <blockquote class="relative z-10">
@@ -275,10 +304,10 @@
 </div>
 </section>
 <!-- Newsletter CTA -->
-<section class="py-32 px-16 border-t border-zinc-200/50 relative z-20">
-<div class="max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-16">
+<section class="py-16 md:py-32 px-6 md:px-16 border-t border-zinc-200/50 relative z-20">
+<div class="max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8 md:gap-16">
 <div class="max-w-xl text-center md:text-left">
-<h2 class="font-headline-lg text-on-surface mb-6 leading-none">Join the Circle.</h2>
+<h2 class="text-3xl md:text-5xl font-headline-lg text-on-surface mb-4 md:mb-6 leading-tight">Join the Circle.</h2>
 <p class="font-body-lg text-secondary">Be the first to receive invitations to private exhibitions and exclusive seasonal releases.</p>
 </div>
 <div class="w-full max-w-md">
@@ -292,7 +321,7 @@
 </main>
 <!-- Footer -->
 <!-- SITE FOOTER -->
-<footer class="bg-zinc-900 dark:bg-black full-width py-24 px-16">
+<footer class="bg-zinc-900 dark:bg-black full-width py-16 md:py-24 px-6 md:px-16">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-[1440px] mx-auto">
 <div>
 <span class="text-3xl font-black text-white mb-8 block font-['Noto_Serif'] tracking-tighter">RENAISSANCE</span>
@@ -321,12 +350,21 @@
 </div>
 </div>
 </div>
-<div class="mt-24 pt-12 border-t border-zinc-800 w-full max-w-[1440px] mx-auto flex justify-between items-center">
-<span class="font-['Noto_Serif'] text-sm tracking-widest uppercase text-zinc-500 text-xs">© 2024 RENAISSANCE HOTEL. A CURATED GALLERY OF MOMENTS.</span>
+<div class="mt-12 md:mt-24 pt-8 md:pt-12 border-t border-zinc-800 w-full max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+<span class="font-['Noto_Serif'] text-xs tracking-widest uppercase text-zinc-500 text-center md:text-left">© 2024 RENAISSANCE HOTEL. A CURATED GALLERY OF MOMENTS.</span>
 <div class="flex items-center gap-2 text-zinc-500 font-label-caps text-xs">
                 DESIGNED FOR THE CURIOUS
                 <span class="material-symbols-outlined text-xs">stat_0</span>
 </div>
 </div>
 </footer>
+<script>
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('open');
+    }
+    function closeMobileMenu() {
+        document.getElementById('mobile-menu').classList.remove('open');
+    }
+</script>
 </body></html>
